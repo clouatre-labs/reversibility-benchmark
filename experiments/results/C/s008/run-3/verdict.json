@@ -1,0 +1,16 @@
+{
+  "scenario_id": "s008",
+  "classifier": "C",
+  "run_id": "run-3",
+  "verdict": "invalid",
+  "confidence": "",
+  "markers_fired": [],
+  "rationale": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 0,
+  "notes": "attempt 2: Extra data: line 17 column 1 (char 663)",
+  "sub_a": null,
+  "sub_b": null
+}
