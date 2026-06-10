@@ -52,13 +52,17 @@ Full results: [experiments/aggregate/summary.csv](experiments/aggregate/summary.
 See [METHODOLOGY.md](METHODOLOGY.md) for limitations, including the pilot-scale n=5 in the
 headline cell and the single-model-family constraint.
 
-![Two-panel chart: left panel shows halt rate bar chart with 95% CI error bars for Classifiers A, B, C; right panel shows stacked bar of halt vs pass counts in the low-risk irreversible cell with Fisher p annotations](figures/fig1-classifier-metrics.png)
+![Bar chart of halt rate with 95% Wilson CI error bars for Classifiers A, B, and C](figures/fig1-classifier-metrics.png)
 
-*Figure 1: (A) Halt rate with 95% Wilson CI per classifier. (B) Low-risk + irreversible cell breakdown (n=5, the pre-registered headline test class): blue = halt, orange = pass (missed). Fisher p annotated above each bar; asterisk marks p < 0.05.*
+*Figure 1: Halt rate with 95% Wilson CI per classifier. Classifiers B and C halt at rates above 85%; Classifier A halts at 75%. CI bars reflect uncertainty given n=60.*
 
-![Heatmap of halt vs pass verdicts across all 60 scenarios for each classifier, showing near-blanket halting by B and selective halting by A and C](figures/fig2-consistency.png)
+![Heatmap of halt rate by reversibility tier and risk tier for each classifier, showing where classifiers agree and diverge across the 2x2 corpus design](figures/fig2-halt-rate-heatmap.png)
 
-*Figure 2: Per-item verdict heatmap across all 60 scenarios (s001-s060) for each classifier. Blue = halt, orange = pass. All verdicts were consistent across 3 runs (std=0); each cell shows the modal verdict.*
+*Figure 2: Halt rate heatmap by reversibility tier x risk tier, per classifier. Columns are occupied corpus subgroups; cell text shows halt rate and item count. The reversible/low cell (n=12) is the only subgroup where classifiers diverge substantially: A=8%, B=83%, C=25%. All other subgroups show 100% halt across classifiers, or unanimous pass.*
+
+![Scatter plot of the 6 scenarios where Classifier A and C verdicts diverge, positioned in the risk x reversibility space, with colour distinguishing true misses rescued by B from false positives introduced by B](figures/fig3-verdict-disagreement.png)
+
+*Figure 3: Verdict disagreement -- the 6 scenarios where A passed but C halted. Grey dots = scenarios where A and C agree (n=54). Blue circles = true misses rescued by B (irreversible/low items A failed to catch). Orange crosses = B false positives on reversible/low items that dragged C into an incorrect halt.*
 
 ## Corpus Design
 
@@ -112,9 +116,11 @@ reversibility-benchmark/
       failure-classifications.csv    # Miss/false-positive breakdown per item
   figures/
     fig1-classifier-metrics.py       # Generates fig1-classifier-metrics.png
-    fig1-classifier-metrics.png      # Two-panel: halt rate with CI + low+irrev cell
-    fig2-consistency.py              # Generates fig2-consistency.png
-    fig2-consistency.png             # Verdict heatmap across all 60 scenarios
+    fig1-classifier-metrics.png      # Halt rate with 95% CI per classifier
+    fig2-halt-rate-heatmap.py        # Generates fig2-halt-rate-heatmap.png
+    fig2-halt-rate-heatmap.png       # Halt rate by reversibility x risk tier, per classifier
+    fig3-verdict-disagreement.py     # Generates fig3-verdict-disagreement.png
+    fig3-verdict-disagreement.png    # Scenarios where A and C verdicts diverge
   scripts/
     annotate.py                      # Two-pass annotation runner
     classify.py                      # Classifier runner (A, B, C)
@@ -140,7 +146,8 @@ uv run python3 scripts/aggregate.py
 
 # Regenerate figures
 uv run python3 figures/fig1-classifier-metrics.py
-uv run python3 figures/fig2-consistency.py
+uv run python3 figures/fig2-halt-rate-heatmap.py
+uv run python3 figures/fig3-verdict-disagreement.py
 ```
 
 Configuration is read from `params.json`. Model behavior at temperature 0.3 was perfectly
