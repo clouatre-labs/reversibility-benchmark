@@ -6,7 +6,7 @@
 [![Scenarios](https://img.shields.io/badge/scenarios-60-blue)](corpus/)
 [![Status](https://img.shields.io/badge/status-complete-green)](METHODOLOGY.md)
 
-Agentic systems that act on external state require classifiers capable of distinguishing actions whose consequences cannot be undone. We evaluate three classifier designs against a shared corpus of 60 synthetic agentic action scenarios, each independently annotated by two simulated SRE agents (inter-annotator kappa: 0.89 reversibility, 0.92 risk tier). Classifier A (multi-factor risk label) missed 4 of 5 low-risk irreversible actions (miss rate 13.8%). Classifier B (reversibility gate) achieved zero misses at a 93.6% false-positive rate. Classifier C (combined A OR B) achieved zero misses with a significantly lower false-positive rate (71.0%) and is the only design clearing the pre-registered Fisher's exact alpha=0.05 threshold on the headline low-risk-irreversible cell (p=0.002, n=5).
+Agentic systems that act on external state require classifiers capable of distinguishing actions whose consequences cannot be undone. We evaluate three classifier designs against a shared corpus of 60 synthetic agentic action scenarios, each independently annotated by two simulated SRE agents (inter-annotator kappa: 0.89 reversibility, 0.92 risk tier). Classifier A (multi-factor risk label) missed 4 of 5 low-risk irreversible actions (miss rate 13.8%). Classifier B (reversibility gate) achieved zero misses at a 93.6% false-positive rate. Classifier B (reversibility gate) achieved zero misses at a 93.6% false-positive rate; its Fisher p=0.4921 is a degeneracy artifact of near-blanket halting, not a null result. Classifier C (combined A OR B) achieved zero misses with a 71.0% false-positive rate, reducing B's FP rate by 22.6 percentage points at fixed recall. Fisher p=0.002 for C is exploratory at n=5 (Wilson CI for 0/5: [0%, 43%]).
 
 </div>
 
@@ -53,7 +53,7 @@ All runs at temperature 0.3, 3 runs per item per classifier (540 verdict files t
 Experiment completed 2026-06-10. 60 scenarios, 3 classifiers, 3 runs each (540 verdict files).
 0 invalid runs. All verdicts consistent across runs (std=0 at temperature 0.3).
 
-*Table 1: Headline metrics per classifier. 95% CI on halt rate from Wilson score interval. Miss rate computed over all irreversible items (n=29). False-positive rate computed over all non-irreversible items (n=31). Fisher p is two-tailed exact test on the low+irreversible cell (n=5).*
+*Table 1: Headline metrics per classifier. 95% CI on halt rate from Wilson score interval. Miss rate computed over all irreversible items (n=29). False-positive rate computed over all non-irreversible items (n=31). Fisher p is two-tailed exact test on the low+irreversible cell (n=5). B's p=0.4921 is a degeneracy artifact: with 96.7% halt rate the 2x2 pass row has near-zero variance and the test cannot detect association. C's p=0.002 is exploratory at n=5 (Wilson CI for 0/5: [0%, 43%]); it reflects FP reduction at fixed recall, not a recall improvement from A.*
 
 | Classifier | Halt rate | 95% CI | Miss rate (irreversible) | False-positive rate | Fisher p (low+irrev, n=5) |
 |---|---|---|---|---|---|
@@ -62,9 +62,11 @@ Experiment completed 2026-06-10. 60 scenarios, 3 classifiers, 3 runs each (540 v
 | C (combined A OR B) | 85.0% | 73.9-91.9% | 0.0% | 71.0% | **0.0020** |
 
 Classifier A (risk-label) missed 4 of 5 low-risk irreversible scenarios. Classifier B
-(reversibility gate) missed none, but at a 93.6% false-positive rate reflecting its blocklist
-design. Classifier C is the only result clearing the pre-registered alpha=0.05 threshold
-(p=0.002, Fisher's exact, n=5 in headline cell).
+(reversibility gate) missed none, at a 93.6% false-positive rate; B's Fisher p=0.4921 is a
+degeneracy artifact of near-blanket halting, not a null result. Classifier C reduces B's FP
+rate from 93.6% to 71.0% at fixed zero-miss recall; its Fisher p=0.002 reflects this FP
+reduction, not a recall improvement from A. The result is exploratory: n=5 in the headline
+cell (Wilson CI for 0/5: [0%, 43%]).
 
 Full results: [experiments/aggregate/summary.csv](experiments/aggregate/summary.csv).
 See [METHODOLOGY.md](METHODOLOGY.md) for limitations, including the pilot-scale n=5 in the
@@ -76,7 +78,7 @@ headline cell and the single-model-family constraint.
 
 ![Two-panel grouped bar chart comparing halt rates with 95% Wilson CI on the reversible/low and irreversible/low subgroups for Classifiers A, B, and C](figures/fig2-reversible-low-detail.png)
 
-*Figure 3: Halt rates with 95% Wilson CI on the two subgroups where classifiers diverge. Left: reversible/low items (n=12), the false-positive stress test -- B fires on 83%, C on 25%, A on 8%. Right: irreversible/low items (n=5), the Fisher test cell -- B and C halt all five; A halts only one (20%), driving its miss rate and the non-significant Fisher p=0.075. C's combined signal achieves the significant Fisher p=0.002 precisely because it captures this cell without B's false-positive cost.*
+*Figure 3: Halt rates with 95% Wilson CI on the two subgroups where classifiers diverge. Left: reversible/low items (n=12), the false-positive stress test -- B fires on 83%, C on 25%, A on 8%. Right: irreversible/low items (n=5), the Fisher test cell -- B and C halt all five; A halts only one (20%), driving its miss rate and the non-significant Fisher p=0.075. C's combined signal achieves Fisher p=0.002 by reducing B's false-positive rate from 93.6% to 71% at fixed zero-miss recall; the result is exploratory at n=5.*
 
 ## Corpus Design
 
