@@ -1,0 +1,4 @@
+classifier,n_items,n_invalid,halt_rate,halt_rate_ci_low,halt_rate_ci_high,miss_rate,false_positive_rate,low_risk_irreversible_halt,low_risk_irreversible_pass,fisher_p_value,mean_cost_usd,total_cost_usd
+A,60,0,0.75,0.6277,0.8422,0.1379,0.6452,1,4,0.074714,0.003258,0.586434
+B,60,0,0.9667,0.8864,0.9908,0.0,0.9355,5,0,0.49209,0.002651,0.477159
+C,60,0,0.85,0.7389,0.919,0.0,0.7097,5,0,0.002041,0.004978,0.896079

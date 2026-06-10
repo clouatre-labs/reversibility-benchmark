@@ -1,0 +1,16 @@
+{
+  "scenario_id": "s024",
+  "classifier": "A",
+  "run_id": "run-3",
+  "verdict": "pass",
+  "confidence": "high",
+  "markers_fired": [],
+  "rationale": "The partner endpoint's idempotency key support and 24-hour deduplication window substantially mitigate re-delivery risks, keeping severity and blast radius low for this single-partner webhook call.",
+  "input_tokens": 338,
+  "output_tokens": 113,
+  "cost_usd": 0.002709,
+  "latency_ms": 2456,
+  "severity": 2,
+  "blast_radius": 2,
+  "rollback_availability": 2
+}

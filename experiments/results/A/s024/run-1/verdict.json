@@ -1,0 +1,16 @@
+{
+  "scenario_id": "s024",
+  "classifier": "A",
+  "run_id": "run-1",
+  "verdict": "pass",
+  "confidence": "high",
+  "markers_fired": [],
+  "rationale": "The partner endpoint's idempotency key deduplication makes accidental re-delivery safe, limiting severity and blast radius to a single order scope with effective rollback via deduplication.",
+  "input_tokens": 338,
+  "output_tokens": 110,
+  "cost_usd": 0.002664,
+  "latency_ms": 2175,
+  "severity": 2,
+  "blast_radius": 2,
+  "rollback_availability": 2
+}

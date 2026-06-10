@@ -12,11 +12,11 @@
     "no_soft_delete_fallback",
     "large_row_count_affected"
   ],
-  "rationale": "A bulk hard-delete on a production table with 42,000 rows, no transaction wrapper, no recent backup, and no soft-delete mechanism is effectively irreversible and could permanently destroy significant user data at scale.",
+  "rationale": "A bare DELETE on a production table with no transaction, no recent backup, and no soft-delete mechanism makes this permanently destructive at scale, with no practical rollback path.",
   "input_tokens": 323,
-  "output_tokens": 179,
-  "cost_usd": 0.003654,
-  "latency_ms": 3313,
+  "output_tokens": 169,
+  "cost_usd": 0.003504,
+  "latency_ms": 4026,
   "severity": 5,
   "blast_radius": 4,
   "rollback_availability": 5

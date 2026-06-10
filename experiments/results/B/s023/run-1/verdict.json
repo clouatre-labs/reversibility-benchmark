@@ -8,9 +8,9 @@
     "external_side_effect",
     "no_rollback_procedure"
   ],
-  "rationale": "Sending an SMS via Twilio is an external communication that leaves the system boundary and cannot be recalled once delivered, and there is no rollback procedure to unsend a message already transmitted to the customer's phone.",
+  "rationale": "Sending an SMS via Twilio is an external communication that leaves the system boundary and reaches the customer's phone; once delivered, the message cannot be recalled or undone.",
   "input_tokens": 348,
-  "output_tokens": 100,
-  "cost_usd": 0.002544,
-  "latency_ms": 2474
+  "output_tokens": 92,
+  "cost_usd": 0.002424,
+  "latency_ms": 2258
 }
