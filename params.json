@@ -1,0 +1,10 @@
+{
+  "provider": "aws_bedrock",
+  "model": "global.anthropic.claude-sonnet-4-6",
+  "model_id": "global.anthropic.claude-sonnet-4-6",
+  "temperature": 0.3,
+  "runs_per_item": 3,
+  "pricing_input_per_mtok_usd": 3.00,
+  "pricing_output_per_mtok_usd": 15.00,
+  "classify_timeout_seconds": 30
+}
