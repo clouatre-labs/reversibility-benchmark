@@ -52,17 +52,13 @@ Full results: [experiments/aggregate/summary.csv](experiments/aggregate/summary.
 See [METHODOLOGY.md](METHODOLOGY.md) for limitations, including the pilot-scale n=5 in the
 headline cell and the single-model-family constraint.
 
-![Grouped bar chart showing halt rate with 95% CI error bars, miss rate on irreversible items, and false-positive rate for Classifiers A, B, and C](figures/fig1-classifier-metrics.png)
+![Two-panel chart: left panel shows halt rate bar chart with 95% CI error bars for Classifiers A, B, C; right panel shows stacked bar of halt vs pass counts in the low-risk irreversible cell with Fisher p annotations](figures/fig1-classifier-metrics.png)
 
-*Figure 1: Halt rate (with 95% CI error bars), miss rate on irreversible items, and false-positive rate per classifier.*
+*Figure 1: (A) Halt rate with 95% Wilson CI per classifier. (B) Low-risk + irreversible cell breakdown (n=5, the pre-registered headline test class): blue = halt, orange = pass (missed). Fisher p annotated above each bar; asterisk marks p < 0.05.*
 
-![Stacked bar chart showing li_halt vs li_pass counts for each classifier in the low-risk irreversible cell, with Fisher p annotations](figures/fig2-low-irrev-cell.png)
+![Heatmap of halt vs pass verdicts across all 60 scenarios for each classifier, showing near-blanket halting by B and selective halting by A and C](figures/fig2-consistency.png)
 
-*Figure 2: Low-risk + irreversible cell breakdown (n=5, the pre-registered headline test class). Blue = correctly halted; orange = incorrectly passed. Fisher p annotated above each bar; asterisk marks p < 0.05.*
-
-![Heatmap of halt vs pass verdicts across all 60 scenarios for each classifier, showing near-blanket halting by B and selective halting by A and C](figures/fig3-consistency.png)
-
-*Figure 3: Per-item verdict heatmap across all 60 scenarios (s001-s060) for each classifier. Blue = halt, orange = pass. All verdicts were consistent across 3 runs (std=0); each cell shows the modal verdict.*
+*Figure 2: Per-item verdict heatmap across all 60 scenarios (s001-s060) for each classifier. Blue = halt, orange = pass. All verdicts were consistent across 3 runs (std=0); each cell shows the modal verdict.*
 
 ## Corpus Design
 
@@ -116,11 +112,9 @@ reversibility-benchmark/
       failure-classifications.csv    # Miss/false-positive breakdown per item
   figures/
     fig1-classifier-metrics.py       # Generates fig1-classifier-metrics.png
-    fig1-classifier-metrics.png      # Grouped bar chart: halt/miss/FP rates
-    fig2-low-irrev-cell.py           # Generates fig2-low-irrev-cell.png
-    fig2-low-irrev-cell.png          # Stacked bar: low+irreversible cell breakdown
-    fig3-consistency.py              # Generates fig3-consistency.png
-    fig3-consistency.png             # Verdict heatmap across all 60 scenarios
+    fig1-classifier-metrics.png      # Two-panel: halt rate with CI + low+irrev cell
+    fig2-consistency.py              # Generates fig2-consistency.png
+    fig2-consistency.png             # Verdict heatmap across all 60 scenarios
   scripts/
     annotate.py                      # Two-pass annotation runner
     classify.py                      # Classifier runner (A, B, C)
@@ -146,8 +140,7 @@ uv run python3 scripts/aggregate.py
 
 # Regenerate figures
 uv run python3 figures/fig1-classifier-metrics.py
-uv run python3 figures/fig2-low-irrev-cell.py
-uv run python3 figures/fig3-consistency.py
+uv run python3 figures/fig2-consistency.py
 ```
 
 Configuration is read from `params.json`. Model behavior at temperature 0.3 was perfectly

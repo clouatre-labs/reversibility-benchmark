@@ -1,9 +1,9 @@
 """
-Figure 3: Per-item verdict consistency heatmap.
+Figure 2: Per-item verdict consistency heatmap.
 
 Three horizontal strips (one per classifier) showing halt (blue) vs pass (orange)
 for all 60 scenarios in order. All verdicts were consistent across 3 runs (std=0),
-so each cell is the single modal verdict. Renders fig3-consistency.png.
+so each cell is the single modal verdict. Renders fig2-consistency.png.
 """
 import matplotlib
 matplotlib.use('Agg')
@@ -63,5 +63,5 @@ ax.spines['bottom'].set_visible(False)
 ax.spines['left'].set_visible(False)
 
 plt.tight_layout()
-plt.savefig('figures/fig3-consistency.png', dpi=150, bbox_inches='tight')
-print('Wrote figures/fig3-consistency.png')
+plt.savefig('figures/fig2-consistency.png', dpi=150, bbox_inches='tight')
+print('Wrote figures/fig2-consistency.png')
