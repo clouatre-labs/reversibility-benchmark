@@ -1,0 +1,21 @@
+{
+  "scenario_id": "s037",
+  "classifier": "A",
+  "run_id": "run-2",
+  "verdict": "halt",
+  "confidence": "high",
+  "markers_fired": [
+    "production environment modification",
+    "no automated rollback procedure",
+    "known regression history in patch updates",
+    "core framework update affecting routing and session handling"
+  ],
+  "rationale": "Updating Rails in production without a rollback procedure risks application-wide outages affecting all users, and the known history of routing/session regressions in patch versions elevates both severity and blast radius to halt thresholds.",
+  "input_tokens": 317,
+  "output_tokens": 159,
+  "cost_usd": 0.003336,
+  "latency_ms": 3445,
+  "severity": 4,
+  "blast_radius": 4,
+  "rollback_availability": 5
+}

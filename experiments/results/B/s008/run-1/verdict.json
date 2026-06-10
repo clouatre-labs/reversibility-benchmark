@@ -8,9 +8,9 @@
     "mutates_persistent_state",
     "no_rollback_procedure"
   ],
-  "rationale": "The UPDATE statement permanently modifies rows in the database (even a dev database constitutes persistent state), and no rollback or undo procedure is described for reversing the bulk email_verified flag changes.",
+  "rationale": "The UPDATE statement permanently modifies rows in the database (even a dev database with persistent storage), and no rollback procedure or transaction wrapper is described that would allow reverting the mass update.",
   "input_tokens": 332,
-  "output_tokens": 98,
-  "cost_usd": 0.002466,
-  "latency_ms": 3211
+  "output_tokens": 95,
+  "cost_usd": 0.002421,
+  "latency_ms": 2951
 }

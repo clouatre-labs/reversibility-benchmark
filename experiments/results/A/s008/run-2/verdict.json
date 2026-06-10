@@ -8,11 +8,11 @@
     "bulk-update",
     "bypasses-business-logic"
   ],
-  "rationale": "The action modifies a potentially large set of rows and bypasses verification logic, but the fully isolated development environment with sanitized data limits real-world harm to negligible levels.",
+  "rationale": "The action modifies a potentially large set of rows and bypasses verification logic, but the fully isolated dev environment with sanitized data limits real-world harm to negligible levels.",
   "input_tokens": 330,
   "output_tokens": 119,
   "cost_usd": 0.002775,
-  "latency_ms": 2748,
+  "latency_ms": 2471,
   "severity": 2,
   "blast_radius": 2,
   "rollback_availability": 3

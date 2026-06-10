@@ -8,9 +8,9 @@
     "mutates_persistent_state",
     "no_rollback_procedure"
   ],
-  "rationale": "The UPDATE permanently downgrades subscription plans in the production billing database (mutates_persistent_state), and reverting requires a manual re-upgrade flow with no automated rollback procedure documented (no_rollback_procedure).",
+  "rationale": "The UPDATE permanently modifies subscription plan data in the production billing database, and the context explicitly states the downgrade is irreversible without a manual re-upgrade flow, meaning no automated rollback procedure exists.",
   "input_tokens": 331,
-  "output_tokens": 104,
-  "cost_usd": 0.002553,
-  "latency_ms": 2423
+  "output_tokens": 99,
+  "cost_usd": 0.002478,
+  "latency_ms": 1901
 }
