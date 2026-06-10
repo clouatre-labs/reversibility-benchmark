@@ -106,6 +106,8 @@ Actual kappa: 0.89 (reversibility), 0.92 (risk tier). 0 items discarded. 7 items
 
 ## Project Structure
 
+*Code Snippet 1: Repository layout.*
+
 ```text
 reversibility-benchmark/
   README.md                          # This file
@@ -147,6 +149,8 @@ reversibility-benchmark/
 
 Requires Python 3.14+, `uv`, and AWS credentials with Bedrock access (`ca-central-1`).
 
+*Code Snippet 2: Full reproduction sequence from frozen corpus.*
+
 ```bash
 uv sync
 
@@ -170,7 +174,7 @@ provider API changes.
 
 ## Inspecting the Data
 
-*Code Snippet 1: Example queries for exploring the dataset.*
+*Code Snippet 3: Example queries for exploring the dataset.*
 
 ```bash
 # Print headline metrics for all three classifiers
