@@ -152,3 +152,5 @@ uv run python3 figures/b2-pr-curve.py
 ```
 
 B2 was designed after the original A/B/C run. It was not included in the pre-registered protocol; its results are exploratory. The B2 precision-recall sweep is written to `experiments/aggregate/b2-precision-recall.csv`.
+
+**Limitations of the B2 threshold sweep:** Two methodological constraints apply. First, the classifier prompt instructs the model to emit a default verdict at threshold=3; confidence scores may be anchored to that value, reducing the independence of operating points at other thresholds. Second, thresholds are selected and evaluated on the same 60-scenario corpus with no held-out set; reported precision and recall at each operating point are in-sample estimates and will be optimistic relative to a new corpus. The sweep is exploratory and no operating point should be cited as a validated production threshold without out-of-sample replication.
