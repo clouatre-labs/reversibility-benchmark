@@ -54,7 +54,7 @@ headline cell and the single-model-family constraint.
 
 ![Grouped bar chart showing halt rate with 95% CI error bars, miss rate on irreversible items, and false-positive rate for Classifiers A, B, and C](figures/fig1-classifier-metrics.png)
 
-*Figure 1: Halt rate (with 95% CI), miss rate on irreversible items, and false-positive rate per classifier. Dashed line at alpha=0.05 for reference.*
+*Figure 1: Halt rate (with 95% CI error bars), miss rate on irreversible items, and false-positive rate per classifier.*
 
 ![Stacked bar chart showing li_halt vs li_pass counts for each classifier in the low-risk irreversible cell, with Fisher p annotations](figures/fig2-low-irrev-cell.png)
 

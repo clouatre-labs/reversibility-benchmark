@@ -21,9 +21,9 @@ fig, ax = plt.subplots(figsize=(6, 4.5))
 fig.patch.set_facecolor('white')
 ax.set_facecolor('white')
 
-bars_halt = ax.bar(x, LI_HALT, width, label='Halted (correct)', color='#4C72B0', zorder=3)
+bars_halt = ax.bar(x, LI_HALT, width, label='Halt', color='#4C72B0', zorder=3)
 bars_pass = ax.bar(x, LI_PASS, width, bottom=LI_HALT,
-                   label='Passed (missed)', color='#DD8452', zorder=3)
+                   label='Pass (missed)', color='#DD8452', zorder=3)
 
 # Annotate counts inside bars
 for i, (h, p) in enumerate(zip(LI_HALT, LI_PASS)):
