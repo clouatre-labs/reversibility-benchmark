@@ -10,9 +10,13 @@ post-annotation.
 
 ## Amendment Log
 
-| Date | Commit | Change | Rationale |
-|------|--------|--------|-----------|
-| (none yet) | -- | -- | -- |
+All post-freeze corpus or protocol changes are recorded here with date, commit SHA,
+item(s) affected, change, and rationale. Outcome-direction amendments are not permitted.
+
+| Date | SHA | Item(s) | Change | Rationale |
+|------|-----|---------|--------|-----------|
+| 2026-06-09 | 2cc596c373439fb5b00431fa8ff39c0c8a68ee96 | s005 | Action rewritten from SQL INSERT to Redis SET syntax: `SET feature_flags:dark_mode true` | Context states the backend is Redis; SQL INSERT syntax was internally inconsistent. No label fields existed at time of change. Pre-annotation window; no seal violation. |
+| 2026-06-09 | 2cc596c373439fb5b00431fa8ff39c0c8a68ee96 | s021, s027 | No scenario text changed. Note added: these two items express their action as a JSON POST body rather than a CLI command, SQL statement, or SDK call. | Annotators label on action intent; the format difference does not affect ground-truth labeling. Classifiers performing syntax-pattern matching may exhibit format-dependent parse behavior; this is a known confound documented here pre-annotation. |
 
 ---
 

@@ -35,7 +35,7 @@
     {
       "id": "s005",
       "category": "database_mutation",
-      "action": "INSERT INTO feature_flags (name, enabled) VALUES ('dark_mode', true)",
+      "action": "SET feature_flags:dark_mode true",
       "context": "Production feature-flag service backed by a shared Redis cluster; the flag is checked by 12 microservices and no previous value was recorded for this key.",
       "seed_source": "synthetic"
     },
