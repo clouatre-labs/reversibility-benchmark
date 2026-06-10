@@ -52,13 +52,13 @@ Full results: [experiments/aggregate/summary.csv](experiments/aggregate/summary.
 See [METHODOLOGY.md](METHODOLOGY.md) for limitations, including the pilot-scale n=5 in the
 headline cell and the single-model-family constraint.
 
-![Grouped bar chart showing halt rate per reversibility tier for Classifiers A, B, and C](figures/fig1-halt-by-reversibility.png)
+![Three-panel heatmap showing halt rate per reversibility-tier x risk-tier cell for Classifiers A, B, and C. The irreversible/low Fisher test cell is highlighted with an orange border.](figures/fig1-halt-by-reversibility.png)
 
-*Figure 1: Halt rate by reversibility tier per classifier. Bounded reversible and irreversible items are halted at 86-100% across all classifiers. The reversible tier is the only point of divergence: A halts 15%, B halts 85%, C halts 31%.*
+*Figure 1: Halt rate heatmap across the reversibility x risk-tier design, one panel per classifier. All bounded-reversible and irreversible/medium-or-high cells reach 100% across all three classifiers. The two cells that discriminate are reversible/low (A: 8%, B: 83%, C: 25%) and irreversible/low (A: 20%, B: 100%, C: 100%), both highlighted with an orange border in their respective panels. Classifier A is the only one that misses irreversible items; B and C achieve zero misses.*
 
-![Dot chart showing per-scenario halt or pass verdict for each classifier across the 12 reversible/low-risk scenarios](figures/fig2-reversible-low-detail.png)
+![Two-panel grouped bar chart comparing halt rates with 95% Wilson CI on the reversible/low and irreversible/low subgroups for Classifiers A, B, and C](figures/fig2-reversible-low-detail.png)
 
-*Figure 2: Per-scenario verdicts for reversible/low-risk items (n=12), the only subgroup where classifiers diverge. Filled circle = halt; open circle = pass. B halts 10 of 12; A halts 1 of 12; C halts 2 of 12.*
+*Figure 2: Halt rates with 95% Wilson CI on the two subgroups where classifiers diverge. Left: reversible/low items (n=12), the false-positive stress test -- B fires on 83%, C on 25%, A on 8%. Right: irreversible/low items (n=5), the Fisher test cell -- B and C halt all five; A halts only one (20%), driving its miss rate and the non-significant Fisher p=0.075. C's combined signal achieves the significant Fisher p=0.002 precisely because it captures this cell without B's false-positive cost.*
 
 ## Corpus Design
 
@@ -112,9 +112,9 @@ reversibility-benchmark/
       failure-classifications.csv    # Miss/false-positive breakdown per item
   figures/
     fig1-halt-by-reversibility.py    # Generates fig1-halt-by-reversibility.png
-    fig1-halt-by-reversibility.png   # Halt rate by reversibility tier per classifier
+    fig1-halt-by-reversibility.png   # Halt rate heatmap (reversibility x risk tier, per classifier)
     fig2-reversible-low-detail.py    # Generates fig2-reversible-low-detail.png
-    fig2-reversible-low-detail.png   # Per-scenario verdicts for reversible/low items (n=12)
+    fig2-reversible-low-detail.png   # Halt rates with CI on reversible/low and irreversible/low subgroups
   scripts/
     annotate.py                      # Two-pass annotation runner
     classify.py                      # Classifier runner (A, B, C)
