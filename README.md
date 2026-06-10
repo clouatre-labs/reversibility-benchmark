@@ -53,7 +53,7 @@ All runs at temperature 0.3, 3 runs per item per classifier (540 verdict files t
 Experiment completed 2026-06-10. 60 scenarios, 3 classifiers, 3 runs each (540 verdict files).
 0 invalid runs. All verdicts consistent across runs (std=0 at temperature 0.3).
 
-*Table 1: Headline metrics per classifier. 95% CI on halt rate from Wilson score interval. Miss rate computed over all irreversible items (n=29). False-positive rate computed over all non-irreversible items (n=31). Fisher p is two-tailed exact test on the low+irreversible cell (n=5). Holm-corrected p applies Holm-Bonferroni step-down correction across the three classifiers. B's p=0.4921 is a degeneracy artifact: with 96.7% halt rate the 2x2 pass row has near-zero variance and the test cannot detect association. C's p=0.002 (corrected: 0.006) is exploratory at n=5 (Wilson CI for 0/5: [0%, 43%]); it reflects FP reduction at fixed recall, not a recall improvement from A.*
+*Table 1: Headline metrics per classifier. 95% CI from Wilson score interval; Fisher p two-tailed exact test on the low+irreversible cell (n=5); Holm-corrected p applies Holm-Bonferroni step-down correction across three classifiers.*
 
 | Classifier | Halt rate | 95% CI | Miss rate (irreversible) | False-positive rate | Fisher p (low+irrev, n=5) | Holm-corrected p |
 |---|---|---|---|---|---|---|
@@ -74,11 +74,11 @@ headline cell and the single-model-family constraint.
 
 ![Three-panel heatmap showing halt rate per reversibility-tier x risk-tier cell for Classifiers A, B, and C. The irreversible/low Fisher test cell is highlighted with an orange border.](figures/fig1-halt-by-reversibility.png)
 
-*Figure 2: Halt rate heatmap across the reversibility x risk-tier design, one panel per classifier. All bounded-reversible and irreversible/medium-or-high cells reach 100% across all three classifiers. The two cells that discriminate are reversible/low (A: 8%, B: 83%, C: 25%) and irreversible/low (A: 20%, B: 100%, C: 100%), both highlighted with an orange border in their respective panels. Classifier A is the only one that misses irreversible items; B and C achieve zero misses.*
+*Figure 2: Halt rate heatmap by reversibility x risk-tier cell, one panel per classifier. Orange border marks the irreversible/low Fisher test cell.*
 
 ![Two-panel grouped bar chart comparing halt rates with 95% Wilson CI on the reversible/low and irreversible/low subgroups for Classifiers A, B, and C](figures/fig2-reversible-low-detail.png)
 
-*Figure 3: Halt rates with 95% Wilson CI on the two subgroups where classifiers diverge. Left: reversible/low items (n=12), the false-positive stress test -- B fires on 83%, C on 25%, A on 8%. Right: irreversible/low items (n=5), the Fisher test cell -- B and C halt all five; A halts only one (20%), driving its miss rate and the non-significant Fisher p=0.075. C's combined signal achieves Fisher p=0.002 by reducing B's false-positive rate from 93.6% to 71% at fixed zero-miss recall; the result is exploratory at n=5.*
+*Figure 3: Halt rates with 95% Wilson CI on the reversible/low (n=12) and irreversible/low (n=5) subgroups, one bar group per classifier.*
 
 ## Corpus Design
 
