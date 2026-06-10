@@ -53,12 +53,7 @@ All classifier prompts were authored after corpus freeze. A rubric-runner cross-
 
 Holm-Bonferroni step-down correction was applied to the three Fisher exact test p-values (one per classifier). P-values are sorted ascending; each is multiplied by (total - rank + 1) and capped at 1.0:
 
-- Sorted input: A p=0.0020, B p=0.0747, C p=0.4921
-- Rank 1 (A, smallest): 0.0020 x 3 = 0.0060
-- Rank 2 (B): 0.0747 x 2 = 0.1494
-- Rank 3 (C, largest): min(1.0, 0.4921 x 1) = 0.4921
-
-Wait -- the Fisher p-values in score order are A=0.0747, B=0.4921, C=0.0020. Sorted ascending: C=0.0020, A=0.0747, B=0.4921. Correction:
+The Fisher p-values in score order are A=0.0747, B=0.4921, C=0.0020. Sorted ascending: C=0.0020, A=0.0747, B=0.4921. Correction:
 
 - Rank 1 (C): 0.0020 x 3 = 0.0060
 - Rank 2 (A): 0.0747 x 2 = 0.1494

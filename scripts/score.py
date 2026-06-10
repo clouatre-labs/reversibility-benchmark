@@ -94,7 +94,8 @@ def fisher_p(halt_irrev: int, pass_irrev: int, halt_rev: int, pass_rev: int) -> 
 def holm_bonferroni(p_values: list[float]) -> list[float]:
     """Apply Holm-Bonferroni step-down correction.
 
-    Sorts p-values ascending, multiplies each by (total - rank), caps at 1.0.
+    Sorts p-values ascending; multiplies the k-th smallest (1-indexed) by
+    (n - k + 1), where n is the total number of p-values; caps each at 1.0.
     Returns corrected values in the original input order.
     """
     n = len(p_values)
