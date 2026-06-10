@@ -44,6 +44,8 @@ graph TD
     F --> G[aggregate.py<br/>summary CSV + Fisher p]
 ```
 
+*Figure 3: Experiment pipeline. Corpus annotation is sealed before any classifier prompt is written; scoring and aggregation are fully automated.*
+
 All runs at temperature 0.3, 3 runs per item per classifier (540 verdict files total).
 
 ## Results
@@ -247,7 +249,7 @@ conflicts of interest to declare.
   author  = {Clouatre, Hugues},
   year    = {2026},
   url     = {https://github.com/clouatre-labs/reversibility-benchmark},
-  note    = {Preprint. Supplementary dataset and code: \url{https://github.com/clouatre-labs/reversibility-benchmark}}
+  note    = {Preprint. Manuscript under review.}
 }
 ```
 
