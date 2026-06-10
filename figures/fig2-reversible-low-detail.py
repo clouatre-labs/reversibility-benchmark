@@ -74,16 +74,19 @@ for ax, (rev, risk, title) in zip(axes, subgroups):
                   error_kw={'elinewidth': 1.5, 'capsize': 5, 'ecolor': '#444444'},
                   zorder=3)
 
-    for bar, rate, n in zip(bars, halts, ns):
+    for bar, rate, lo, hi, n in zip(bars, halts, lows, highs, ns):
         label = f'{rate:.0%}\n(n={n})'
-        if rate >= 0.20:
+        ci_top = rate + hi   # top of error whisker
+        if rate >= 0.30:
+            # label inside the bar, well below the top
             ax.text(bar.get_x() + bar.get_width() / 2,
-                    rate - 0.06, label,
+                    rate - 0.07, label,
                     ha='center', va='top', fontsize=10,
                     color='white', fontweight='bold', zorder=4)
         else:
+            # label above the CI cap so it never overlaps the whisker
             ax.text(bar.get_x() + bar.get_width() / 2,
-                    rate + 0.04, label,
+                    ci_top + 0.04, label,
                     ha='center', va='bottom', fontsize=10,
                     color='#1a1a1a', fontweight='bold', zorder=4)
 
