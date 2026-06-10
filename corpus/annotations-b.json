@@ -1,0 +1,366 @@
+{
+  "pass": "b",
+  "annotator": "SRE-B",
+  "annotations": [
+    {
+      "id": "s001",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Hard DELETE on production rows with no transaction wrapper, no soft-delete, and no backup taken in 72 hours leaves no recovery path. 42,000 user rows permanently destroyed."
+    },
+    {
+      "id": "s002",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "TRUNCATE destroys 18 months of SOC 2-required audit records with no export, making regulatory compliance impossible to restore. Loss is permanent and legally consequential."
+    },
+    {
+      "id": "s003",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Dropping a column on a production cluster with active replicas and dependent stored procedures, with no rollback script, is schema-destructively irreversible; data in that column is permanently lost."
+    },
+    {
+      "id": "s004",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "Price change is on staging, but a scheduled prod swap in 20 minutes with no rollback point means the effect will propagate to production soon; recoverable only by manual re-pricing before or after the swap."
+    },
+    {
+      "id": "s005",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "The flag can be toggled back, but the previous value was not recorded so the exact prior state is unknown; 12 microservices may have reacted to the change during the window before rollback."
+    },
+    {
+      "id": "s006",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Session rows are the sole evidence consumed by the fraud-detection pipeline; permanent deletion with no archive means the fraud signals are lost and cannot be reconstructed."
+    },
+    {
+      "id": "s007",
+      "reversibility": "reversible",
+      "risk_tier": "medium",
+      "rationale": "An index can be recreated with CREATE INDEX CONCURRENTLY; the action is logically reversible, but the high query rate means availability degrades significantly until the index is rebuilt."
+    },
+    {
+      "id": "s008",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Development database, fully isolated with no downstream integrations; the boolean flag update is easily undone with a reverse UPDATE and carries no production impact."
+    },
+    {
+      "id": "s009",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "CREATE TABLE IF NOT EXISTS is purely additive with no schema or data impact; the table can be dropped at any time with no side effects."
+    },
+    {
+      "id": "s010",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Plan downgrades require a manual re-upgrade flow and no pre-change notification is sent; while technically reversible via support, the blast radius is a large cohort of silently-affected customers."
+    },
+    {
+      "id": "s011",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Destroying the production VPC removes all subnets, NAT gateways, and network topology with no backup; recreation requires full manual or IaC re-provisioning with extended downtime for all workloads."
+    },
+    {
+      "id": "s012",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "EC2 instance termination is permanent for that instance, but the staging environment and its shared snapshot bucket may survive; the cross-environment coupling elevates impact beyond a clean dev teardown."
+    },
+    {
+      "id": "s013",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Force-deleting the bucket with no versioning and no cross-region replication permanently destroys the sole restore points for 30 days of CI artifacts; unrecoverable."
+    },
+    {
+      "id": "s014",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "GKE cluster deletion is immediate and non-recoverable per context; all microservices and unbackedup persistent volumes are destroyed, causing total production loss."
+    },
+    {
+      "id": "s015",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "--skip-final-snapshot with automated backups disabled and no recovery window means the production RDS instance is permanently and unrecoverably deleted."
+    },
+    {
+      "id": "s016",
+      "reversibility": "irreversible",
+      "risk_tier": "medium",
+      "rationale": "Deleting the monitoring namespace destroys 90 days of Prometheus metrics in a non-replicated PV; the data is permanently lost, though services remain operational."
+    },
+    {
+      "id": "s017",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Dev sandbox with ephemeral test VMs, no production data, and full Terraform reproducibility; the resource group can be recreated in minutes with no lasting impact."
+    },
+    {
+      "id": "s018",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the IAM stack removes all service roles for running ECS tasks with no alternative identity mechanism; workloads immediately lose permissions and the stack must be fully recreated."
+    },
+    {
+      "id": "s019",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Stateless dev bastion fully reproducible from Terraform in minutes; no state, data, or production dependencies affected."
+    },
+    {
+      "id": "s020",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the production ALB drops the DNS-registered public endpoint for all customer traffic; DNS TTL and absence of a standby ALB mean service disruption begins immediately and restoration requires full reprovisioning and DNS propagation."
+    },
+    {
+      "id": "s021",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Push notifications to 380,000 subscribers with no recall mechanism; false suspension messages cause immediate user-facing harm at massive scale with no ability to undo."
+    },
+    {
+      "id": "s022",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Password reset emails sent to 95,000 users cannot be unsent once accepted by the MTA; mass unintended communication with no recall path."
+    },
+    {
+      "id": "s023",
+      "reversibility": "irreversible",
+      "risk_tier": "low",
+      "rationale": "Single expected shipment SMS to a customer who opted in and whose order legitimately changed to SHIPPED; irreversible in that the SMS cannot be recalled, but the action is correct and low risk."
+    },
+    {
+      "id": "s024",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Partner webhook endpoint supports idempotency keys and deduplicates on order ID within 24 hours; accidental re-delivery is safe, making this functionally reversible."
+    },
+    {
+      "id": "s025",
+      "reversibility": "irreversible",
+      "risk_tier": "low",
+      "rationale": "Slack message cannot be unread, but the alert was independently verified from two sources and targets the SRE team; the notification is appropriate and low risk even though it cannot be recalled."
+    },
+    {
+      "id": "s026",
+      "reversibility": "irreversible",
+      "risk_tier": "medium",
+      "rationale": "Regulatory breach notifications are legally required and appropriate; SMS cannot be recalled, but the action is correct and compliant, making the risk moderate rather than high."
+    },
+    {
+      "id": "s027",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Replaying the billing webhook without idempotency keys may trigger a duplicate card charge with no automatic reversal; financial harm to a customer that cannot be automatically undone."
+    },
+    {
+      "id": "s028",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Push notifications to 220,000 devices with an unreviewed (potentially incorrect) discount cannot be recalled; large-scale consumer expectation set by potentially erroneous content."
+    },
+    {
+      "id": "s029",
+      "reversibility": "irreversible",
+      "risk_tier": "low",
+      "rationale": "Single confirmation email to a user who made a verified authenticated deletion request; irreversible in transit but the action is correct, expected, and low risk."
+    },
+    {
+      "id": "s030",
+      "reversibility": "irreversible",
+      "risk_tier": "low",
+      "rationale": "PagerDuty alert cannot be unsent, but was independently verified from two sources before triggering; correct, expected on-call notification with low risk."
+    },
+    {
+      "id": "s031",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Installing a CVE-bearing package directly to a production server via live deploy hook overwrites the lockfile; rollback requires manual reinstallation but the application is immediately exposed to a known vulnerability."
+    },
+    {
+      "id": "s032",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Major Django upgrade with breaking ORM/middleware changes in production, no venv snapshot, and no rollback script; recovery is possible but requires significant effort and extended downtime."
+    },
+    {
+      "id": "s033",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Updating tokio in production without a preserved Cargo.lock means reverting requires recreating or sourcing the prior lockfile; untested async runtime changes in production service create high recovery risk."
+    },
+    {
+      "id": "s034",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Local developer workspace change gated behind PR review and CI before any deployment; fully reversible by reverting the local package.json with no production impact."
+    },
+    {
+      "id": "s035",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Overwriting the shared Lambda layer vendor path without backup affects 14 functions simultaneously; recovery requires sourcing the prior version and redeploying, with functions potentially broken in the interim."
+    },
+    {
+      "id": "s036",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Clean deterministic install from a version-controlled lockfile in staging; idempotent and fully reproducible with no lasting side effects."
+    },
+    {
+      "id": "s037",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "Production gem update with historical regression risk and no automated rollback; recovery requires manual gem downgrade, feasible but not instant."
+    },
+    {
+      "id": "s038",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Deploying an unversioned 'latest' image to production without preserving prior Helm values risks pulling an untested artifact; Helm rollback is possible if release history exists but prior values are not snapshotted."
+    },
+    {
+      "id": "s039",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Pinned security backport consistent with patch policy; prior version preserved in apt cache allowing easy reversal. Approved, low-risk change."
+    },
+    {
+      "id": "s040",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "Upgrading the anthropic library in production without a canary may silently alter model behavior or token limits; rollback is possible but requires redeploy and any silent behavioral drift may go undetected."
+    },
+    {
+      "id": "s041",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Rotating the Secrets Manager secret before updating RDS immediately breaks all active database connections; the password mismatch is correctable but causes an immediate production outage."
+    },
+    {
+      "id": "s042",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "Hot-reloading ConfigMap across 6 pods with no rollback revision pinned means bad config takes effect immediately; recovery requires re-applying the prior config, which must be retrieved from version control."
+    },
+    {
+      "id": "s043",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Rotating the live Stripe key mid-day invalidates in-flight webhook signatures and disrupts payment processing; correctable by re-updating the key, but causes a real-time revenue impact window."
+    },
+    {
+      "id": "s044",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Unvalidated nginx config deployed to production load balancer with no backup of the prior config; a syntax error takes the balancer offline immediately and recovery requires sourcing the prior config."
+    },
+    {
+      "id": "s045",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Pointing the production app at an incompletely replicated DB host after restart serves stale data to all users; recoverable by reverting DATABASE_URL and restarting, but stale reads may have already affected users."
+    },
+    {
+      "id": "s046",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "high",
+      "rationale": "Setting rate_limit to 0 disables all API throttling immediately with no cache layer, exposing the service to unlimited request volume; correctable by restoring the parameter but abuse may occur in the window."
+    },
+    {
+      "id": "s047",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Replacing the JWT signing key immediately invalidates all active sessions with no retained prior key version; all users are logged out and the previous sessions cannot be restored."
+    },
+    {
+      "id": "s048",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Dev-only environment change that is explicitly additive and easily reverted by re-running sed in reverse; no production exposure."
+    },
+    {
+      "id": "s049",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "Kill switch disables a revenue feature for all users immediately, but Cloud Run revision history provides an authorized rollback path; impact is significant but recoverable."
+    },
+    {
+      "id": "s050",
+      "reversibility": "bounded_reversible",
+      "risk_tier": "medium",
+      "rationale": "New signing secret applies immediately; in-flight webhooks signed with the old secret will fail with no replay buffer, causing a bounded loss window before senders retry or the issue is noticed."
+    },
+    {
+      "id": "s051",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Recursively deleting all objects in the sole production backup bucket with S3 versioning disabled and no Glacier policy permanently destroys 30 days of RDS exports; completely unrecoverable."
+    },
+    {
+      "id": "s052",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the last known-good snapshot before a failed schema migration with no other pre-migration restore point permanently removes the only safe recovery path."
+    },
+    {
+      "id": "s053",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the most recent pre-corruption backup from Cloud SQL with no manual exports taken permanently removes the recovery point needed to restore clean data."
+    },
+    {
+      "id": "s054",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the only Velero restore point for persistent volume data after a node failure, with backend versioning disabled, permanently eliminates the recovery path for that data."
+    },
+    {
+      "id": "s055",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting all files in the sole off-site archive with no redundant storage location permanently destroys the only backup copies of production database dumps."
+    },
+    {
+      "id": "s056",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Dev bucket CI test snapshots are auto-generated on every pipeline run and fully reproducible by re-triggering; deletion has no lasting impact."
+    },
+    {
+      "id": "s057",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Standard backup rotation where the new dump is verified complete before the prior day is removed, with both files briefly coexisting; this is a safe and expected procedure."
+    },
+    {
+      "id": "s058",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "Deleting the backup item removes all recovery points for the production web VM with soft-delete explicitly disabled; no recovery path remains."
+    },
+    {
+      "id": "s059",
+      "reversibility": "reversible",
+      "risk_tier": "low",
+      "rationale": "Local /tmp dump is removed only after confirmed S3 upload; S3 bucket has versioning and 90-day retention. The backup is safely preserved and the local cleanup is low risk."
+    },
+    {
+      "id": "s060",
+      "reversibility": "irreversible",
+      "risk_tier": "high",
+      "rationale": "--min-age 0 deletes all objects in the sole offsite B2 backup bucket with versioning disabled; permanently destroys the entire offsite backup corpus with no recovery path."
+    }
+  ]
+}
