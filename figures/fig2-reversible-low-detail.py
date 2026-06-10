@@ -1,82 +1,105 @@
 """
-Figure 2: Per-scenario verdict detail for reversible/low items (n=12).
+Figure 2: Classifier comparison on the two divergent subgroups.
 
-The only subgroup where classifiers diverge. Each row is a scenario; columns
-are classifiers A, B, C. Filled circle = halt, open circle = pass.
-Scenarios sorted by A verdict then scenario ID.
+Two-panel grouped bar chart.
+  Left panel:  reversible/low (n=12)  -- the false-positive stress test
+  Right panel: irreversible/low (n=5) -- the Fisher test cell
+
+Each panel shows halt rate per classifier (A, B, C) with 95% Wilson CI bars
+and the item count labelled inside each bar.
 Reads experiments/aggregate/consistency.csv and corpus/scenarios.json directly.
 Renders fig2-reversible-low-detail.png.
 """
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.lines as mlines
 import numpy as np
 import csv, json
 
-# --- Load ---
-data = json.load(open('corpus/scenarios.json'))
-scenarios = {s['id']: s for s in data['scenarios']}
-rows = list(csv.DictReader(open('experiments/aggregate/consistency.csv')))
-verdicts = {}
-for r in rows:
-    verdicts.setdefault(r['classifier'], {})[r['scenario_id']] = r['verdict_mode']
+# --- Wilson score 95% CI ---
+def wilson_ci(k, n, z=1.96):
+    if n == 0:
+        return 0.0, 0.0
+    p = k / n
+    denom = 1 + z**2 / n
+    centre = (p + z**2 / (2 * n)) / denom
+    margin = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom
+    return max(0.0, centre - margin), min(1.0, centre + margin)
 
-# --- Filter reversible/low ---
-sids = sorted(
-    [sid for sid, sc in scenarios.items()
-     if sc['reversibility'] == 'reversible' and sc['risk_tier'] == 'low'],
-    key=lambda sid: (verdicts['A'][sid], sid)
-)
+# --- Load ---
+scenarios = {s['id']: s for s in json.load(open('corpus/scenarios.json'))['scenarios']}
+rows = list(csv.DictReader(open('experiments/aggregate/consistency.csv')))
 
 CLFS = ['A', 'B', 'C']
 COLORS = {'A': '#4C72B0', 'B': '#DD8452', 'C': '#55A868'}
+CLF_LABELS = ['A\nmulti-factor', 'B\nrev. gate', 'C\ncombined']
 
-# --- Plot ---
-fig, ax = plt.subplots(figsize=(5, 6))
+cells = {}
+for r in rows:
+    sc = scenarios[r['scenario_id']]
+    key = (sc['reversibility'], sc['risk_tier'], r['classifier'])
+    if key not in cells:
+        cells[key] = {'halt': 0, 'total': 0}
+    cells[key]['total'] += 1
+    if r['verdict_mode'] == 'halt':
+        cells[key]['halt'] += 1
+
+subgroups = [
+    ('reversible', 'low', 'Reversible / low-risk\n(false-positive stress, n=12)'),
+    ('irreversible', 'low', 'Irreversible / low-risk\n(Fisher test cell, n=5)'),
+]
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
 fig.patch.set_facecolor('white')
-ax.set_facecolor('white')
 
-n = len(sids)
-y_positions = np.arange(n)
+x = np.arange(3)
+width = 0.5
 
-for xi, clf in enumerate(CLFS):
-    for yi, sid in enumerate(sids):
-        v = verdicts[clf][sid]
-        if v == 'halt':
-            ax.scatter(xi, yi, s=180, color=COLORS[clf],
-                       zorder=3, edgecolors=COLORS[clf], linewidths=1.2)
+for ax, (rev, risk, title) in zip(axes, subgroups):
+    ax.set_facecolor('white')
+    halts, lows, highs = [], [], []
+    ns = []
+    for clf in CLFS:
+        c = cells[(rev, risk, clf)]
+        k, n = c['halt'], c['total']
+        halts.append(k / n if n else 0)
+        lo, hi = wilson_ci(k, n)
+        lows.append(halts[-1] - lo)
+        highs.append(hi - halts[-1])
+        ns.append(n)
+
+    bars = ax.bar(x, halts, width,
+                  color=[COLORS[c] for c in CLFS],
+                  yerr=[lows, highs],
+                  error_kw={'elinewidth': 1.5, 'capsize': 5, 'ecolor': '#444444'},
+                  zorder=3)
+
+    for bar, rate, n in zip(bars, halts, ns):
+        label = f'{rate:.0%}\n(n={n})'
+        if rate >= 0.20:
+            ax.text(bar.get_x() + bar.get_width() / 2,
+                    rate - 0.06, label,
+                    ha='center', va='top', fontsize=10,
+                    color='white', fontweight='bold', zorder=4)
         else:
-            ax.scatter(xi, yi, s=180, facecolors='white',
-                       edgecolors=COLORS[clf], linewidths=1.8, zorder=3)
+            ax.text(bar.get_x() + bar.get_width() / 2,
+                    rate + 0.04, label,
+                    ha='center', va='bottom', fontsize=10,
+                    color='#1a1a1a', fontweight='bold', zorder=4)
 
-# Row labels (scenario IDs)
-ax.set_yticks(y_positions)
-ax.set_yticklabels(sids, fontsize=9)
-ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(['A\n(multi-factor risk)', 'B\n(reversibility gate)', 'C\n(combined)'],
-                   fontsize=9)
-ax.set_xlim(-0.5, 2.5)
-ax.set_ylim(-0.7, n - 0.3)
+    ax.set_xticks(x)
+    ax.set_xticklabels(CLF_LABELS, fontsize=10)
+    ax.set_ylim(0, 1.18)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f'{v:.0%}'))
+    ax.yaxis.grid(True, linestyle='--', linewidth=0.5, alpha=0.5, zorder=0)
+    ax.set_axisbelow(True)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_title(title, fontsize=10, pad=8)
 
-# Horizontal grid lines between rows
-for y in y_positions:
-    ax.axhline(y, color='#eeeeee', linewidth=0.8, zorder=0)
+axes[0].set_ylabel('Halt rate (95% Wilson CI)', fontsize=11)
 
-# Legend
-halt_marker = mlines.Line2D([], [], color='#666666', marker='o', linestyle='None',
-                             markersize=9, label='Halt', markerfacecolor='#666666')
-pass_marker = mlines.Line2D([], [], color='#666666', marker='o', linestyle='None',
-                             markersize=9, label='Pass', markerfacecolor='white',
-                             markeredgewidth=1.8)
-ax.legend(handles=[halt_marker, pass_marker], fontsize=9,
-          loc='lower right', framealpha=0.9)
-
-ax.set_title('Reversible / low-risk items (n=12)', fontsize=10, pad=8)
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-ax.spines['bottom'].set_visible(False)
-
+fig.suptitle('Classifier halt rates on the two divergent subgroups', fontsize=12, y=1.02)
 plt.tight_layout()
-plt.savefig('figures/fig2-reversible-low-detail.png', dpi=150, bbox_inches='tight')
+plt.savefig('figures/fig2-reversible-low-detail.png', dpi=300, bbox_inches='tight')
 print('Wrote figures/fig2-reversible-low-detail.png')
