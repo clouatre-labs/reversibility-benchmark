@@ -124,7 +124,7 @@ reversibility-benchmark/
 
 ## Reproducibility
 
-Requires Python 3.11+, `uv`, and AWS credentials with Bedrock access (`us-east-1`).
+Requires Python 3.14+, `uv`, and AWS credentials with Bedrock access (`ca-central-1`).
 
 ```bash
 uv sync
@@ -194,10 +194,10 @@ print('Inconsistent items:', len(inconsistent))
 
 | Component | Version |
 |---|---|
-| Python | 3.11+ |
+| Python | 3.14.5 |
 | Agent | goose 1.37.0 |
 | Model | Claude Sonnet 4.6 (`global.anthropic.claude-sonnet-4-6`) |
-| Provider | Amazon Bedrock (`us-east-1`, Converse API) |
+| Provider | Amazon Bedrock (`ca-central-1`, Converse API) |
 | matplotlib | 3.7+ |
 | numpy | 1.24+ |
 | scipy | 1.14+ |
