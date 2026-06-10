@@ -6,8 +6,7 @@
 [![Scenarios](https://img.shields.io/badge/scenarios-60-blue)](corpus/)
 [![Status](https://img.shields.io/badge/status-complete-green)](METHODOLOGY.md)
 
-Does a reversibility-based gate classifier catch agentic actions that a multi-factor risk-label
-classifier misses, and at what false-positive cost?
+Agentic systems that act on external state require classifiers capable of distinguishing actions whose consequences cannot be undone. We evaluate three classifier designs against a shared corpus of 60 synthetic agentic action scenarios, each independently annotated by two simulated SRE agents (inter-annotator kappa: 0.89 reversibility, 0.92 risk tier). Classifier A (multi-factor risk label) missed 4 of 5 low-risk irreversible actions (miss rate 13.8%). Classifier B (reversibility gate) achieved zero misses at a 93.6% false-positive rate. Classifier C (combined A OR B) achieved zero misses with a significantly lower false-positive rate (71.0%) and is the only design clearing the pre-registered Fisher's exact alpha=0.05 threshold on the headline low-risk-irreversible cell (p=0.002, n=5).
 
 </div>
 
@@ -29,6 +28,23 @@ false-positive rate, and consistency across three runs per item.
 See [PROTOCOL.md](PROTOCOL.md) for the pre-registered experimental protocol (locked
 pre-annotation), [METHODOLOGY.md](METHODOLOGY.md) for the executed procedure, and
 [DATA_DICTIONARY.md](DATA_DICTIONARY.md) for all corpus and result schemas.
+
+
+## Experiment Flow
+
+```mermaid
+graph TD
+    A[Corpus<br/>60 scenarios] --> B[Two-pass annotation<br/>sealed before classify]
+    B --> C[Classifier A<br/>multi-factor risk]
+    B --> D[Classifier B<br/>reversibility gate]
+    B --> E[Classifier C<br/>A OR B combined]
+    C --> F[score.py<br/>vs ground truth]
+    D --> F
+    E --> F
+    F --> G[aggregate.py<br/>summary CSV + Fisher p]
+```
+
+All runs at temperature 0.3, 3 runs per item per classifier (540 verdict files total).
 
 ## Results
 
@@ -169,8 +185,11 @@ rescued = [sid for sid in a if a[sid]=='pass' and c[sid]=='halt']
 print('Rescued by B:', sorted(rescued))
 "
 
-# Inspect a single verdict file
-cat experiments/results/A/s023/run-1/verdict.json | python3 -m json.tool
+# Inspect a single verdict file (shows verdict, markers_fired, rationale, severity, blast_radius)
+cat experiments/results/A/s001/run-1/verdict.json | python3 -m json.tool
+
+# Show all markers fired by Classifier B on a scenario
+jq '{verdict, markers_fired}' experiments/results/B/s001/run-1/verdict.json
 
 # Show all misses (irreversible items that passed) per classifier
 uv run python3 -c "
@@ -195,17 +214,19 @@ print('Inconsistent items:', len(inconsistent))
 | Component | Version |
 |---|---|
 | Python | 3.14.5 |
+| uv | 0.11.19 |
 | Agent | goose 1.37.0 |
 | Model | Claude Sonnet 4.6 (`global.anthropic.claude-sonnet-4-6`) |
 | Provider | Amazon Bedrock (`ca-central-1`, Converse API) |
-| matplotlib | 3.7+ |
-| numpy | 1.24+ |
-| scipy | 1.14+ |
+| matplotlib | 3.10.9 |
+| numpy | 2.4.6 |
+| scipy | 1.17.1 |
 
 ## Data Availability
 
 All experimental data, protocols, scoring scripts, analysis outputs, and figure generation
-scripts are available in this repository under the Apache 2.0 license.
+scripts are available in this repository under the Apache 2.0 license. No data has been
+excluded or selectively reported.
 
 ## Ethics Statement
 
@@ -225,7 +246,8 @@ conflicts of interest to declare.
   title   = {Reversibility as a Safety Gate for Agentic Actions},
   author  = {Clouatre, Hugues},
   year    = {2026},
-  url     = {https://github.com/clouatre-labs/reversibility-benchmark}
+  url     = {https://github.com/clouatre-labs/reversibility-benchmark},
+  note    = {Preprint. Supplementary dataset and code: \url{https://github.com/clouatre-labs/reversibility-benchmark}}
 }
 ```
 
