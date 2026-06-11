@@ -136,7 +136,7 @@ present in this design.
 
 ### 2026-06-09 -- Rubric-Runner Cross-Check (classifier prompts vs verdict.json schema)
 
-**Commit SHA:** (filled at commit time)
+**Commit SHA:** 1214f56
 **Author:** Automated rubric-runner cross-check per PROTOCOL.md Classifier Prompt Design Rules
 
 #### Cross-check result: PASS

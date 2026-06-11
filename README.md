@@ -129,7 +129,7 @@ reversibility-benchmark/
   experiments/
     results/                         # Per-item classifier outputs (3 classifiers x 3 runs each)
     aggregate/
-      summary.csv                    # Classifier comparison headline metrics (includes corrected_fisher_p)
+      summary.csv                    # Classifier comparison headline metrics
       consistency.csv                # Cross-run variance per item
       failure-classifications.csv    # Miss/false-positive breakdown per item
   figures/
@@ -137,17 +137,17 @@ reversibility-benchmark/
     fig1-halt-by-reversibility.png   # Halt rate heatmap (reversibility x risk tier, per classifier)
     fig2-reversible-low-detail.py    # Generates fig2-reversible-low-detail.png
     fig2-reversible-low-detail.png   # Halt rates with CI on reversible/low and irreversible/low subgroups
-    b2-pr-curve.py                   # Generates b2-pr-curve.png (requires B2 run)
+    b2-pr-curve.py                   # Generates b2-pr-curve.png (requires B2 run; B2 was not executed in this experiment)
   scripts/
-    annotate.py                      # Two-pass annotation runner
-    classify.py                      # Classifier runner (A, B, C, B2)
+    annotate.py                      # Two-pass annotation runner (stub; corpus frozen -- see file header)
+    classify.py                      # Classifier runner (A, B, C)
     score.py                         # Per-item scoring against ground truth
     aggregate.py                     # Print aggregate CSV summary
 ```
 
 ## Reproducibility
 
-Requires Python 3.14+, `uv`, and AWS credentials with Bedrock access (`ca-central-1`).
+Requires Python 3.11+, `uv`, and AWS credentials with Bedrock access (`ca-central-1`).
 
 *Code Snippet 2: Full reproduction sequence from frozen corpus.*
 
