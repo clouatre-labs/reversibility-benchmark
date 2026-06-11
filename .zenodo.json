@@ -4,7 +4,7 @@
   "access_right": "open",
   "license": "apache-2.0",
   "language": "eng",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Annotated corpus and classifier evaluation results for a benchmark comparing three classifier designs on their ability to distinguish reversible from irreversible agentic actions. Contains 60 synthetic scenarios independently annotated by two simulated SRE agents (Cohen's kappa 0.89 reversibility, 0.92 risk tier), classifier outputs from 540 verdict files (3 classifiers x 3 runs x 60 scenarios at temperature 0.3), aggregate metrics (halt rate, miss rate, false-positive rate, Fisher p, Holm-corrected p), and all scoring and figure-generation scripts. Classifier C (combined reversibility gate and multi-factor risk label) achieves zero misses on irreversible scenarios at a 71.0% false-positive rate; Fisher p=0.002 (Holm-corrected p=0.006) for the low-risk irreversible cell (exploratory at n=5). Pre-registered protocol locked before annotation; methodology document records the executed procedure.",
   "keywords": [
     "reversibility",
