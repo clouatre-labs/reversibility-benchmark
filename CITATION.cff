@@ -9,7 +9,7 @@ authors:
 repository-code: "https://github.com/clouatre-labs/reversibility-benchmark"
 license: Apache-2.0
 date-released: "2026-06-10"
-version: "1.0.0"
+version: "1.0.1"
 abstract: >
   Annotated corpus and classifier evaluation results for a benchmark comparing three
   classifier designs on their ability to distinguish reversible from irreversible agentic
