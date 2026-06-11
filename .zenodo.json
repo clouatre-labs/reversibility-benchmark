@@ -1,0 +1,30 @@
+{
+  "title": "Reversibility Benchmark: Classifier Evaluation Dataset for Agentic Action Safety",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "apache-2.0",
+  "language": "eng",
+  "version": "1.0.0",
+  "description": "Annotated corpus and classifier evaluation results for a benchmark comparing three classifier designs on their ability to distinguish reversible from irreversible agentic actions. Contains 60 synthetic scenarios independently annotated by two simulated SRE agents (Cohen's kappa 0.89 reversibility, 0.92 risk tier), classifier outputs from 540 verdict files (3 classifiers x 3 runs x 60 scenarios at temperature 0.3), aggregate metrics (halt rate, miss rate, false-positive rate, Fisher p, Holm-corrected p), and all scoring and figure-generation scripts. Classifier C (combined reversibility gate and multi-factor risk label) achieves zero misses on irreversible scenarios at a 71.0% false-positive rate; Fisher p=0.002 (Holm-corrected p=0.006) for the low-risk irreversible cell (exploratory at n=5). Pre-registered protocol locked before annotation; methodology document records the executed procedure.",
+  "keywords": [
+    "reversibility",
+    "agentic-ai",
+    "llm-safety",
+    "classifier-evaluation",
+    "benchmark",
+    "pre-registered",
+    "fisher-exact",
+    "inter-annotator-agreement",
+    "false-positive-rate",
+    "action-safety",
+    "irreversibility",
+    "llm-evaluation"
+  ],
+  "creators": [
+    {
+      "name": "Clouatre, Hugues",
+      "orcid": "0009-0002-4291-1999"
+    }
+  ],
+  "notes": "Experiment completed 2026-06-10. All verdicts consistent across 3 runs (std=0 at temperature 0.3). 0 invalid runs. Fisher p for Classifier C is exploratory at pilot scale (n=5 in headline cell; Wilson CI for 0/5: [0%, 43%]). Holm-Bonferroni correction applied across three classifiers."
+}
