@@ -250,15 +250,7 @@ conflicts of interest to declare.
 
 ## Citation
 
-```bibtex
-@misc{clouatre2026reversibility,
-  title   = {Reversibility as a Safety Gate for Agentic Actions},
-  author  = {Clouatre, Hugues},
-  year    = {2026},
-  url     = {https://github.com/clouatre-labs/reversibility-benchmark},
-  note    = {Preprint. Manuscript under review.}
-}
-```
+If you cite this work, use [CITATION.cff](CITATION.cff): it is the single source of truth for citation metadata (title, authors, version, DOI, blog write-up) and GitHub renders it under "Cite this repository".
 
 ## License
 
